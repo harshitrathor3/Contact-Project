@@ -1,4 +1,6 @@
 from mysql import connector
+from os import urandom
+
 from constants import host, database, user, password
 
 try:
@@ -7,7 +9,7 @@ try:
         cursor = mydb.cursor()
         cursor.execute(f"SELECT password, name from login where id = '{mob}'")
         ans = cursor.fetchall()
-        status = msg = name = None
+        status = msg = name = token = None
         if len(ans) == 0:
             status = False
             msg = 'User not exist'
@@ -19,11 +21,12 @@ try:
             status = True
             msg = 'Login successfully!'
             name = ans[0][1]
-            cursor.execute(f'UPDATE login SET last_login_date=curdate(), last_login_time=curtime() where id = "{mob}"')
+            token = urandom(10).hex() # generate 20 random character (hex value)
+            cursor.execute(f'UPDATE login SET last_login_date=curdate(), last_login_time=curtime(), token="{token}" where id = "{mob}"')
             mydb.commit()
         cursor.close()
         mydb.close()
-        return status, msg, name
+        return status, msg, name, token
 
 except connector.Error as err:
     if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:

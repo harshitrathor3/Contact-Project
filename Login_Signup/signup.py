@@ -9,7 +9,7 @@ try:
         mydb = connector.connect(host=host, user=user, password=password, database = database)
         cursor = mydb.cursor()
 
-        _, msg, _ = login.check_user_exist(mob, paswrd)
+        _, msg, _, _ = login.check_user_exist(mob, paswrd)
 
         if msg=='User not exist':
             token = None

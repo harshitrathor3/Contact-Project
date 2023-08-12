@@ -18,9 +18,9 @@ def login_page():
     id = request.args.get("id") #/user/?user=user name
     paswrd = request.args.get("password")
 
-    status, msg, name = login.check_user_exist(id, paswrd)
+    status, msg, name, token = login.check_user_exist(id, paswrd)
 
-    json_data = {'status': status, "message": msg, 'name': name}
+    json_data = {'status': status, "message": msg, 'name': name, 'token': token}
     return json_data
 
 @app.route("/signup/", methods=['GET'])
