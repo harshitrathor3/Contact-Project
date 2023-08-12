@@ -5,30 +5,25 @@ from Login_Signup import login
 
 
 try:
-    def signup(mob, paswrd, name, email='', dob=''):
+    def signup(mob, paswrd, name, email=None, dob=None):
         mydb = connector.connect(host=host, user=user, password=password, database = database)
         cursor = mydb.cursor()
 
-        status, msg = login.check_user_exist(mob, paswrd)
+        _, msg, _ = login.check_user_exist(mob, paswrd)
 
         if msg=='User not exist':
-            if email=='':
-                email=None
-            if dob=='':
-                dob=None
             token = None
             qr = "INSERT INTO login VALUES(%s, %s, %s, %s, %s, %s, curdate(), curtime(), curdate(), curtime())"
             cursor.execute(qr, (mob, paswrd, name, token, email, dob))
             mydb.commit()
-            ans = 'Signed up successfully.. Now you can login'
-            var = True
-
+            ans = 'Signed up successfully'
+            status = True
         else:
-            ans = "User already exist.. Pls login via Login Page"
-            var = False
+            ans = "User already exist"
+            status = False
         cursor.close()
         mydb.close()
-        return var, ans
+        return status, ans
 
 except connector.Error as err:
     if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:

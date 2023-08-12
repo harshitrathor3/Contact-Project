@@ -31,7 +31,7 @@ def signup_page():
     email = request.args.get("email")
     dob = request.args.get('dob')
 
-    status, ans = signup.signup(id, paswrd, name)
+    status, ans = signup.signup(id, paswrd, name, email, dob)
     json_data = {'status': status, "msg": ans}
     return json_data
 
