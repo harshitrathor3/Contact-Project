@@ -18,10 +18,9 @@ def login_page():
     id = request.args.get("id") #/user/?user=user name
     paswrd = request.args.get("password")
 
-    status, msg = login.check_user_exist(id, paswrd)
+    status, msg, name = login.check_user_exist(id, paswrd)
 
-    json_data = {'status': status, "message": msg}
-    json_data = json.dumps(json_data)
+    json_data = {'status': status, "message": msg, 'name': name}
     return json_data
 
 @app.route("/signup/", methods=['GET'])
@@ -29,6 +28,8 @@ def signup_page():
     id = request.args.get('id')
     paswrd = request.args.get('password')
     name = request.args.get("name")
+    email = request.args.get("email")
+    dob = request.args.get('dob')
 
     status, ans = signup.signup(id, paswrd, name)
     json_data = {'status': status, "msg": ans}
