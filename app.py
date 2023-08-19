@@ -4,6 +4,7 @@ import json
 
 from constants import host, database, user, password
 from Login_Signup import login, signup
+from Application import contacts_display
 
 
 app = Flask(__name__)
@@ -35,6 +36,14 @@ def signup_page():
     json_data = {'status': status, "msg": ans}
     return json_data
 
-
+@app.route('/applications/get_contacts/', methods=['GET'])
+def get_contacts():
+    id = request.args.get('id')
+    token = request.args.get('token')
+    print(id, token)
+    status, msg, data = contacts_display.display_contacts(id, token)
+    json_data = {'status': status, "msg": msg, 'data': data}
+    return json_data
+    
 if __name__=='__main__':
     app.run(debug=True)
