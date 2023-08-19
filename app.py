@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home_page():
-    return 'hello there'
+    return '<h2>hello there</h2>'
 
 
 @app.route("/login/", methods=['GET'])
