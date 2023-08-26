@@ -1,10 +1,10 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from mysql import connector
 import json
 
 from constants import host, database, user, password
 from Login_Signup import login, signup
-from Application import contacts_display, groups_display
+from Application import contacts_display, groups_display, upload_a_contact
 
 
 app = Flask(__name__)
@@ -53,6 +53,24 @@ def get_groups():
 
     json_data = {'status': status, "msg": msg, 'data': data}
     return json_data
+
+@app.route('/applications/upload_contact/', methods=['POST'])
+def upload_contact():
+    json_data = request.json
+    status, msg = upload_a_contact.upload_contact(json_data)
+    return jsonify({'status': status, 'msg': msg})
+    
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__=='__main__':
     app.run(debug=True)
