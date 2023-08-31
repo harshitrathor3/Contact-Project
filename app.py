@@ -4,7 +4,7 @@ import json
 
 from constants import host, database, user, password
 from Login_Signup import login, signup
-from Application import contacts_display, groups_display, upload_a_contact
+from Application import contacts_display, groups_display, upload_contacts
 
 
 app = Flask(__name__)
@@ -57,8 +57,11 @@ def get_groups():
 @app.route('/applications/upload_contact/', methods=['POST'])
 def upload_contact():
     json_data = request.json
-    status, msg = upload_a_contact.upload_contact(json_data)
+    
+
+    status, msg = upload_contacts.upload(json_data)
     return jsonify({'status': status, 'msg': msg})
+    
     
 
 

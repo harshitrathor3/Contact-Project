@@ -6,7 +6,7 @@ user = 'uotwmxtea0c3wyvn'
 password = 'uEm0TjBWWEhM0CKPazi5'
 
 try:
-    def upload_contact(json_data):
+    def upload(json_data):
         mydb = connector.connect(host=host, user=user, password=password, database = database)
         cursor = mydb.cursor()
         id = json_data.get('id', None)
@@ -19,21 +19,18 @@ try:
         token = json_data['token']
         if db_token!=token:
             return status, msg
-        
-        mob = json_data.get('mob', None)
-        name = json_data.get('name', None)
-        group_id = None
-        email = json_data.get("email", None)
-        profession = json_data.get("profession", None)
-        relation = json_data.get('relation', None)
-        dob = json_data.get('dob', None)
-        address = json_data.get('address', None)
-        city = json_data.get('city', None)
-        pincode = json_data.get('pincode', None)
-        gender = json_data.get('gender', None)
 
-        qr = "INSERT INTO contacts VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, curdate(), curtime())"
-        cursor.execute(qr, (id, mob, name, group_id, email, profession, relation, dob, address, city, pincode, gender))
+        print(json_data['data'])
+        # {'id': 123456, 'token': 'abcdef', 'data': [
+        #         ('d1', 'd2', 'd3'), #row 1
+        #         ('d1', 'd2', 'd3'), #row 2
+        #         ('d1', 'd2', 'd3'), #row 3
+        #     ]
+        # }
+
+        qr = "INSERT INTO contacts VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, curdate(), curtime()) "
+        cursor.executemany(qr, json_data['data'])
+        
         mydb.commit()
         msg = 'Contact Updated'
         status = True
