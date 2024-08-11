@@ -3,6 +3,7 @@ app = Flask(__name__) #define app using Flask
 
 languages = [{'name' : 'JavaScript'}, {'name' : 'Python'}, {'name' : 'Ruby'}]
 
+
 @app.route('/', methods=['GET'])
 def test():
 	return jsonify({'message' : 'It works!'})
